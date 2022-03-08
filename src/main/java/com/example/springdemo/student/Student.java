@@ -1,16 +1,18 @@
 package com.example.springdemo.student;
 
+import java.time.LocalDate;
+
 public class Student {
     private Long id;
     private String name;
     private String email;
-    private String dob;
+    private LocalDate dob;
     private Integer age;
 
     public Student() {
     }
 
-    public Student(Long id, String name, String email, String dob, Integer age) {
+    public Student(Long id, String name, String email, LocalDate dob, Integer age) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -18,7 +20,7 @@ public class Student {
         this.age = age;
     }
 
-    public Student(String name, String email, String dob, Integer age) {
+    public Student(String name, String email, LocalDate dob, Integer age) {
         this.name = name;
         this.email = email;
         this.dob = dob;
@@ -37,7 +39,7 @@ public class Student {
         return email;
     }
 
-    public String getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
@@ -57,7 +59,7 @@ public class Student {
         this.email = email;
     }
 
-    public void setDob(String dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
@@ -71,7 +73,7 @@ public class Student {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", dob='" + dob + '\'' +
+                ", dob=" + dob +
                 ", age=" + age +
                 '}';
     }
