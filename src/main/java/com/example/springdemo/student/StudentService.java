@@ -1,10 +1,9 @@
 package com.example.springdemo.student;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +30,30 @@ public class StudentService {
         studentRepository.save(student);
     }
 
+    public void deleteStudentByNameOrId(String studentNameOrId) {
+        if (StringUtils.isNumeric(studentNameOrId)){
+            Long studentId = Long.valueOf(studentNameOrId);
+            deleteStudentById(studentId);
+        } else {
+            deleteStudentById(studentNameOrId);
+        }
+    }
+
     public void deleteStudentById(Long studentId) {
         boolean studentExists = studentRepository.existsById(studentId);
         if (!studentExists){
             throw new IllegalStateException("student with id " + studentId + " does not exist");
         }
         studentRepository.deleteById(studentId);
+    }
+
+    private void deleteStudentById(String studentName) {
+        boolean studentExists = studentRepository.existsByName(studentName);
+        System.out.println(studentExists);
+        if (!studentExists) {
+            throw new IllegalStateException("student with name " + studentName + " does not exist");
+        }
+        Optional<Student> studentOptional = studentRepository.findStudentByName(studentName);
+        studentOptional.ifPresent(studentRepository::delete);
     }
 }
