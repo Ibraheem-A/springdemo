@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,5 +56,21 @@ public class StudentService {
         }
         Optional<Student> studentOptional = studentRepository.findStudentByName(studentName);
         studentOptional.ifPresent(studentRepository::delete);
+    }
+
+    @Transactional
+    public void updateStudent(Long studentId, String studentEmail, String studentName) {
+        Student student = studentRepository.findById(studentId).orElseThrow(()->new IllegalStateException("student with id " + studentId + " does not exist"));
+
+        if (studentEmail != null && studentEmail.length() != 0 && !studentEmail.equals(student.getEmail())) {
+            student.setEmail(studentEmail);
+        }
+        if (studentName != null && studentName.length() != 0 && !studentName.equals(student.getName())) {
+            Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());
+            if (studentOptional.isPresent()){
+                throw new IllegalStateException("email taken");
+            }
+            student.setName(studentName);
+        }
     }
 }
