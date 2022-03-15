@@ -62,15 +62,15 @@ public class StudentService {
     public void updateStudent(Long studentId, String studentEmail, String studentName) {
         Student student = studentRepository.findById(studentId).orElseThrow(()->new IllegalStateException("student with id " + studentId + " does not exist"));
 
-        if (studentEmail != null && studentEmail.length() != 0 && !studentEmail.equals(student.getEmail())) {
-            student.setEmail(studentEmail);
-        }
         if (studentName != null && studentName.length() != 0 && !studentName.equals(student.getName())) {
+            student.setName(studentName);
+        }
+        if (studentEmail != null && studentEmail.length() != 0 && !studentEmail.equals(student.getEmail())) {
             Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());
             if (studentOptional.isPresent()){
                 throw new IllegalStateException("email taken");
             }
-            student.setName(studentName);
+            student.setEmail(studentEmail);
         }
     }
 }
